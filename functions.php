@@ -48,3 +48,24 @@ function wm_custom_slugify($title)
     $slug = sanitize_title_with_dashes($title);
     return $slug;
 }
+
+//Featured image
+function hide_featured_image_without_bg_image()
+{
+?>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var sections = document.querySelectorAll('section.wm_featured_image');
+
+            sections.forEach(function(section) {
+                var bgImageDiv = section.querySelector('div[style*="background-image"]');
+
+                if (!bgImageDiv || bgImageDiv.style.backgroundImage === 'none' || !bgImageDiv.style.backgroundImage.includes('url')) {
+                    section.style.display = 'none';
+                }
+            });
+        });
+    </script>
+<?php
+}
+add_action('wp_footer', 'hide_featured_image_without_bg_image');
