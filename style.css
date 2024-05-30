@@ -253,3 +253,32 @@ Updated: 2024-04-17 16:50:04
 body.page-id-2167 .wm_grid_listing {
   display: none;
 }
+/*Footer*/
+.wm-footer-menu ul.sub-menu li a {
+  color: black;
+}
+.wm-footer-menu .menu-item-32978,
+.wm-footer-menu .menu-item-32979,
+.wm-footer-menu .menu-item-32986,
+.wm-footer-menu .menu-item-32987,
+.wm-footer-menu .menu-item-32925,
+.wm-footer-menu .menu-item-32933,
+.wm-footer-menu .menu-item-32940,
+.wm-footer-menu .menu-item-32941,
+.wm-footer-menu .menu-item-32945,
+.wm-footer-menu .menu-item-32954,
+.wm-footer-menu .menu-item-32961,
+.wm-footer-menu .menu-item-32962,
+.wm-footer-menu .menu-item-32964,
+.wm-footer-menu .menu-item-32971 {
+  display: none;
+}
+
+.wm-footer-menu .menu-item-has-children > .sub-menu {
+  border-left: 1px solid var(--color-content-link);
+  padding-left: 0;
+}
+
+.wm-footer-menu .menu-item {
+  padding-left: 10px;
+}
