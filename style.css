@@ -10,19 +10,22 @@ Updated: 2024-04-17 16:50:04
 
 */
 /*Global*/
-/* #page-content {
-  margin-top: 13vh;
-} */
-/* @media (min-width: 600px) and (max-width: 1024px) {
-  #page-content {
-    margin-top: 0px;
-  }
-} */
+.wm-acf-gallery {
+  margin-top: 30px;
+}
+.wm-acf-gallery .wpb_wrapper {
+  height: 300px;
+}
+
 /*Header*/
 @media (min-width: 1025px) {
   .wm_header_item {
     display: none !important;
   }
+}
+/*Home*/
+.wm-home-title p {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 /* Grid track & poi */
 .wm_tracks_grid,

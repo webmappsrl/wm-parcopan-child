@@ -69,3 +69,61 @@ function hide_featured_image_without_bg_image()
 <?php
 }
 add_action('wp_footer', 'hide_featured_image_without_bg_image');
+
+function acf_gallery_swiper_shortcode($atts)
+{
+    $atts = shortcode_atts(array(
+        'field' => '',
+        'post_id' => false,
+    ), $atts);
+
+    $images = get_field($atts['field'], $atts['post_id']);
+
+    if (!$images) {
+        return '';
+    }
+
+    $output = '<div class="swiper-container acf-gallery-swiper">';
+    $output .= '<div class="swiper-wrapper">';
+    foreach ($images as $image) {
+        $img_url = $image['url'];
+        $img_alt = $image['alt'];
+        $output .= '<div class="swiper-slide">';
+        $output .= '<img src="' . $img_url . '" alt="' . $img_alt . '">';
+        $output .= '</div>';
+    }
+    $output .= '</div>';
+    $output .= '<div class="swiper-pagination"></div>';
+    $output .= '<div class="swiper-button-prev"></div>';
+    $output .= '<div class="swiper-button-next"></div>';
+    $output .= '</div>';
+
+    // Initialize Swiper Slider
+    $output .= '<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var swiper = new Swiper(".acf-gallery-swiper", {
+                slidesPerView: 1,
+                spaceBetween: 10,
+                breakpoints: {
+                    768: {
+                        slidesPerView: 3,
+                        spaceBetween: 20
+                    },
+                },
+                freeMode: true,
+                loop: true,
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+            });
+        });
+    </script>';
+
+    return $output;
+}
+add_shortcode('acf_gallery_swiper', 'acf_gallery_swiper_shortcode');
