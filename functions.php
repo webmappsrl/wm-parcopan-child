@@ -31,6 +31,30 @@ function child_theme_enqueue_swiper()
 }
 add_action('wp_enqueue_scripts', 'child_theme_enqueue_swiper');
 
+// Lightbox2 CSS and JS from CDN
+function child_theme_enqueue_lightbox2_cdn()
+{
+    wp_enqueue_style('lightbox2-css', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css');
+    wp_enqueue_script('lightbox2-js', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js', array('jquery'), '', true);
+    // Configura Lightbox2
+    add_action('wp_footer', 'configure_lightbox2');
+}
+add_action('wp_enqueue_scripts', 'child_theme_enqueue_lightbox2_cdn');
+
+// Configura Lightbox2
+function configure_lightbox2()
+{
+?>
+    <script>
+        lightbox.option({
+            'fadeDuration': 50, // Durata della fade in millisecondi (0.2 secondi)
+            'resizeDuration': 50, // Durata del resize in millisecondi (0.2 secondi)
+            'wrapAround': true
+        });
+    </script>
+<?php
+}
+
 //Font awesome
 function load_font_awesome()
 {
@@ -49,7 +73,7 @@ function wm_custom_slugify($title)
     return $slug;
 }
 
-//Featured image
+//Hide Featured image if empity
 function hide_featured_image_without_bg_image()
 {
 ?>
@@ -70,6 +94,7 @@ function hide_featured_image_without_bg_image()
 }
 add_action('wp_footer', 'hide_featured_image_without_bg_image');
 
+//ACF Gallery with Swiper Slider and Lightbox
 function acf_gallery_swiper_shortcode($atts)
 {
     $atts = shortcode_atts(array(
@@ -83,13 +108,15 @@ function acf_gallery_swiper_shortcode($atts)
         return '';
     }
 
-    $output = '<div class="swiper-container acf-gallery-swiper">';
+    $output = '<div class="wm-acf-gallery swiper-container acf-gallery-swiper">';
     $output .= '<div class="swiper-wrapper">';
     foreach ($images as $image) {
         $img_url = $image['url'];
         $img_alt = $image['alt'];
         $output .= '<div class="swiper-slide">';
+        $output .= '<a href="' . $img_url . '" data-lightbox="acf-gallery" data-title="' . $img_alt . '">';
         $output .= '<img src="' . $img_url . '" alt="' . $img_alt . '">';
+        $output .= '</a>';
         $output .= '</div>';
     }
     $output .= '</div>';
@@ -127,3 +154,24 @@ function acf_gallery_swiper_shortcode($atts)
     return $output;
 }
 add_shortcode('acf_gallery_swiper', 'acf_gallery_swiper_shortcode');
+
+// Hide wm-acf-gallery if empity
+function hide_acf_gallery_without_images()
+{
+?>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var galleries = document.querySelectorAll('.wm-acf-gallery');
+
+            galleries.forEach(function(gallery) {
+                var images = gallery.querySelectorAll('img');
+
+                if (!images.length) {
+                    gallery.style.display = 'none';
+                }
+            });
+        });
+    </script>
+<?php
+}
+add_action('wp_footer', 'hide_acf_gallery_without_images');
