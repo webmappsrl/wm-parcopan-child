@@ -87,7 +87,7 @@ Updated: 2024-04-17 16:50:04
 /* Single track & poi */
 .wm_body_track_section,
 .wm_body_poi_section {
-  padding: 2% 7% 0% 7%;
+  padding: 2% 15% 0% 15%;
 }
 
 .wm_layer_wrapper {
@@ -167,10 +167,15 @@ Updated: 2024-04-17 16:50:04
 }
 .swiper-button-prev,
 .swiper-button-next {
+  font-size: 20px;
   color: white;
   position: absolute;
   top: 50%;
   z-index: 10;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  width: 40px;
+  height: 40px;
 }
 .swiper-button-prev {
   left: 0%;

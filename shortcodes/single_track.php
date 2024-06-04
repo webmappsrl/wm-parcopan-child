@@ -19,9 +19,6 @@ function wm_single_track_pnfc($atts)
 
 	$track = json_decode(file_get_contents($geojson_url), true);
 	$track = $track['properties'];
-	// echo '<pre>';
-	// print_r($track);
-	// echo '</pre>';
 	$iframeUrl = "https://geohub.webmapp.it/w/simple/" . $track_id;
 
 	$description = null;
@@ -81,16 +78,12 @@ function wm_single_track_pnfc($atts)
 							<?php foreach ($gallery as $image) : ?>
 								<div class="swiper-slide">
 									<?php
-									$size_order = ['400x200', '1440x500', '335x250', '250x150'];
-									$img_url = '';
-									foreach ($size_order as $size) {
-										if (isset($image['sizes'][$size])) {
-											$img_url = esc_url($image['sizes'][$size]);
-											break;
-										}
-									}
-									if ($img_url) : ?>
-										<img src="<?= $img_url ?>" alt="" loading="lazy">
+									$thumbnail_url = isset($image['thumbnail']) ? esc_url($image['thumbnail']) : '';
+									$high_res_url = isset($image['sizes']['1920x']) ? esc_url($image['sizes']['1920x']) : (isset($image['sizes']['1440x500']) ? esc_url($image['sizes']['1440x500']) : $thumbnail_url);
+									if ($thumbnail_url) : ?>
+										<a href="<?= $high_res_url ?>" data-lightbox="track-gallery" data-title="<?= isset($image['name']['it']) ? esc_attr($image['name']['it']) : '' ?>">
+											<img src="<?= $thumbnail_url ?>" alt="<?= isset($image['name']['it']) ? esc_attr($image['name']['it']) : '' ?>" loading="lazy">
+										</a>
 									<?php endif; ?>
 								</div>
 							<?php endforeach; ?>
@@ -111,7 +104,7 @@ function wm_single_track_pnfc($atts)
 					breakpoints: {
 						768: {
 							slidesPerView: 3,
-							spaceBetween: 20
+							spaceBetween: 5
 						},
 					},
 					freeMode: true,
@@ -127,8 +120,9 @@ function wm_single_track_pnfc($atts)
 				});
 			});
 		</script>
-	<?php
+	</div>
 
+<?php
 	return ob_get_clean();
 }
-	?>
+?>

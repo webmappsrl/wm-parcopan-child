@@ -116,16 +116,12 @@ function wm_single_poi($atts)
 						<?php foreach ($gallery as $image) : ?>
 							<div class="swiper-slide">
 								<?php
-								$size_order = ['400x200', '1440x500', '335x250', '250x150'];
-								$img_url = null;
-								foreach ($size_order as $size) {
-									if (isset($image['sizes'][$size])) {
-										$img_url = esc_url($image['sizes'][$size]);
-										break;
-									}
-								}
-								if ($img_url) : ?>
-									<img src="<?= $img_url ?>" alt="" loading="lazy">
+								$thumbnail_url = isset($image['thumbnail']) ? esc_url($image['thumbnail']) : '';
+								$high_res_url = isset($image['sizes']['1920x']) ? esc_url($image['sizes']['1920x']) : (isset($image['sizes']['1440x500']) ? esc_url($image['sizes']['1440x500']) : $thumbnail_url);
+								if ($thumbnail_url) : ?>
+									<a href="<?= $high_res_url ?>" data-lightbox="track-gallery" data-title="<?= isset($image['name']['it']) ? esc_attr($image['name']['it']) : '' ?>">
+										<img src="<?= $thumbnail_url ?>" alt="<?= isset($image['name']['it']) ? esc_attr($image['name']['it']) : '' ?>" loading="lazy">
+									</a>
 								<?php endif; ?>
 							</div>
 						<?php endforeach; ?>

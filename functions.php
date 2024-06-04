@@ -36,19 +36,18 @@ function child_theme_enqueue_lightbox2_cdn()
 {
     wp_enqueue_style('lightbox2-css', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css');
     wp_enqueue_script('lightbox2-js', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js', array('jquery'), '', true);
-    // Configura Lightbox2
     add_action('wp_footer', 'configure_lightbox2');
 }
 add_action('wp_enqueue_scripts', 'child_theme_enqueue_lightbox2_cdn');
 
-// Configura Lightbox2
+// Configuration Lightbox2
 function configure_lightbox2()
 {
 ?>
     <script>
         lightbox.option({
-            'fadeDuration': 50, // Durata della fade in millisecondi (0.2 secondi)
-            'resizeDuration': 50, // Durata del resize in millisecondi (0.2 secondi)
+            'fadeDuration': 50,
+            'resizeDuration': 50,
             'wrapAround': true
         });
     </script>
@@ -131,12 +130,6 @@ function acf_gallery_swiper_shortcode($atts)
             var swiper = new Swiper(".acf-gallery-swiper", {
                 slidesPerView: 1,
                 spaceBetween: 10,
-                breakpoints: {
-                    768: {
-                        slidesPerView: 3,
-                        spaceBetween: 20
-                    },
-                },
                 freeMode: true,
                 loop: true,
                 pagination: {
@@ -155,8 +148,8 @@ function acf_gallery_swiper_shortcode($atts)
 }
 add_shortcode('acf_gallery_swiper', 'acf_gallery_swiper_shortcode');
 
-// Hide wm-acf-gallery if empity
-function hide_acf_gallery_without_images()
+// Hide wm-acf-gallery if empty and adjust container classes
+function hide_acf_gallery_and_adjust_container()
 {
 ?>
     <script>
@@ -166,12 +159,42 @@ function hide_acf_gallery_without_images()
             galleries.forEach(function(gallery) {
                 var images = gallery.querySelectorAll('img');
 
-                if (!images.length) {
-                    gallery.style.display = 'none';
+                if (images.length === 0) {
+                    var galleryContainer = gallery.closest('div.wm-gallery-container');
+                    if (galleryContainer) {
+                        galleryContainer.style.display = 'none';
+                    }
+
+                    var contentContainer = document.querySelector('div.wm-content-container');
+                    if (contentContainer) {
+                        contentContainer.style.width = '100%';
+                    }
                 }
             });
         });
     </script>
 <?php
 }
-add_action('wp_footer', 'hide_acf_gallery_without_images');
+add_action('wp_footer', 'hide_acf_gallery_and_adjust_container');
+
+// Change 'Non categorizzato' to 'News' in breadcrumb
+function change_breadcrumb_text()
+{
+?>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var breadcrumbItems = document.querySelectorAll('.wm-breadcrumb .g-breadcrumbs-item span[itemprop="name"]');
+            breadcrumbItems.forEach(function(item) {
+                if (item.textContent.trim() === 'Non categorizzato') {
+                    item.textContent = 'News';
+                    var parentLink = item.closest('a[itemprop="item"]');
+                    if (parentLink) {
+                        parentLink.href = '/news/';
+                    }
+                }
+            });
+        });
+    </script>
+<?php
+}
+add_action('wp_footer', 'change_breadcrumb_text');
