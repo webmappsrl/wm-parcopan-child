@@ -198,3 +198,15 @@ function change_breadcrumb_text()
 <?php
 }
 add_action('wp_footer', 'change_breadcrumb_text');
+
+// Post excerpt
+function display_post_excerpt($atts)
+{
+    global $post;
+    $excerpt = get_post_field('post_excerpt', $post->ID);
+    if (!empty($excerpt)) {
+        return '<div class="custom-excerpt">' . $excerpt . '</div>';
+    }
+    return '';
+}
+add_shortcode('post_excerpt', 'display_post_excerpt');
