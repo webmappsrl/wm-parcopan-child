@@ -16,10 +16,9 @@ Updated: 2024-04-17 16:50:04
 .wm-acf-gallery .wpb_wrapper {
   height: 300px;
 }
-.grecaptcha-badge {
+body > div:nth-child(55) > div {
   display: none !important;
 }
-
 /*Header*/
 @media (min-width: 1025px) {
   .wm_header_item {
