@@ -17,7 +17,7 @@ Updated: 2024-04-17 16:50:04
   height: 300px;
 }
 .grecaptcha-badge {
-  display: none;
+  display: none !important;
 }
 
 /*Header*/
