@@ -1,9 +1,9 @@
 <?php
 if (!is_admin()) {
-	add_shortcode('wm_single_track', 'wm_single_track_pnfc');
+	add_shortcode('wm_single_track', 'wm_single_track');
 }
 
-function wm_single_track_pnfc($atts)
+function wm_single_track($atts)
 {
 	if (defined('ICL_LANGUAGE_CODE')) {
 		$language = ICL_LANGUAGE_CODE;

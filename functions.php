@@ -177,7 +177,7 @@ function hide_acf_gallery_and_adjust_container()
 }
 add_action('wp_footer', 'hide_acf_gallery_and_adjust_container');
 
-// Change 'Non categorizzato' to 'News' in breadcrumb
+// Change 'Non categorizzato' and 'Uncategorized' to 'News' in breadcrumb
 function change_breadcrumb_text()
 {
 ?>
@@ -185,7 +185,7 @@ function change_breadcrumb_text()
         document.addEventListener("DOMContentLoaded", function() {
             var breadcrumbItems = document.querySelectorAll('.wm-breadcrumb .g-breadcrumbs-item span[itemprop="name"]');
             breadcrumbItems.forEach(function(item) {
-                if (item.textContent.trim() === 'Non categorizzato') {
+                if (item.textContent.trim() === 'Non categorizzato' || item.textContent.trim() === 'Uncategorized') {
                     item.textContent = 'News';
                     var parentLink = item.closest('a[itemprop="item"]');
                     if (parentLink) {
