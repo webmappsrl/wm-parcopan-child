@@ -79,10 +79,11 @@ function wm_single_track($atts)
 								<div class="swiper-slide">
 									<?php
 									$thumbnail_url = isset($image['thumbnail']) ? esc_url($image['thumbnail']) : '';
-									$high_res_url = isset($image['sizes']['1920x']) ? esc_url($image['sizes']['1920x']) : (isset($image['sizes']['1440x500']) ? esc_url($image['sizes']['1440x500']) : $thumbnail_url);
+									$high_res_url = isset($image['url']) ? esc_url($image['url']) : $thumbnail_url;
+									$caption = isset($image['caption'][$language]) ? esc_attr($image['caption'][$language]) : '';
 									if ($thumbnail_url) : ?>
-										<a href="<?= $high_res_url ?>" data-lightbox="track-gallery" data-title="<?= isset($image['name']['it']) ? esc_attr($image['name']['it']) : '' ?>">
-											<img src="<?= $thumbnail_url ?>" alt="<?= isset($image['name']['it']) ? esc_attr($image['name']['it']) : '' ?>" loading="lazy">
+										<a href="<?= $high_res_url ?>" data-lightbox="track-gallery" data-title="<?= $caption ?>">
+											<img src="<?= $thumbnail_url ?>" alt="<?= $caption ?>" loading="lazy">
 										</a>
 									<?php endif; ?>
 								</div>
