@@ -195,7 +195,7 @@ function change_breadcrumb_text()
             });
         });
     </script>
-<?php
+    <?php
 }
 add_action('wp_footer', 'change_breadcrumb_text');
 
@@ -210,3 +210,36 @@ function display_post_excerpt($atts)
     return '';
 }
 add_shortcode('post_excerpt', 'display_post_excerpt');
+
+// Validation for the Tax Code
+function add_codice_fiscale_validation_script()
+{
+    if (is_checkout()) {
+    ?>
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                $('form.checkout').on('submit', function(event) {
+                    var codiceFiscale = $('#additional_wooccm0').val();
+
+                    if (codiceFiscale.length !== 16) {
+                        event.preventDefault();
+                        alert('Il Codice Fiscale deve essere di esattamente 16 caratteri.');
+                    }
+                });
+            });
+        </script>
+<?php
+    }
+}
+add_action('wp_footer', 'add_codice_fiscale_validation_script');
+
+// Validate the Tax Code on the server side
+function validate_codice_fiscale($posted)
+{
+    $codiceFiscale = isset($_POST['additional_wooccm0']) ? $_POST['additional_wooccm0'] : '';
+
+    if (strlen($codiceFiscale) !== 16) {
+        wc_add_notice(__('Il Codice Fiscale deve essere di esattamente 16 caratteri.'), 'error');
+    }
+}
+add_action('woocommerce_checkout_process', 'validate_codice_fiscale');
