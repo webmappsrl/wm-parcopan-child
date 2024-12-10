@@ -19,6 +19,7 @@ function wm_grid_track($atts)
     ), $atts));
 
     $tracks = [];
+    $unique_tracks = [];
     $layer_ids_array = !empty($layer_ids) ? explode(',', $layer_ids) : (!empty($layer_id) ? [$layer_id] : []);
 
     foreach ($layer_ids_array as $id) {
@@ -32,10 +33,14 @@ function wm_grid_track($atts)
         $layer_data = json_decode(wp_remote_retrieve_body($response), true);
         if (!empty($layer_data['tracks'])) {
             foreach ($layer_data['tracks'] as $track) {
-                if (!empty($layer_data['taxonomy_themes'][0]['icon'])) {
-                    $track['svg_icon'] = $layer_data['taxonomy_themes'][0]['icon'];
+                $track_id = $track['id'];
+                if (!isset($unique_tracks[$track_id])) {
+                    $unique_tracks[$track_id] = true;
+                    if (!empty($layer_data['taxonomy_themes'][0]['icon'])) {
+                        $track['svg_icon'] = $layer_data['taxonomy_themes'][0]['icon'];
+                    }
+                    $tracks[] = $track;
                 }
-                $tracks[] = $track;
             }
         }
     }
